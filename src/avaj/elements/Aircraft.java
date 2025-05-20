@@ -14,6 +14,4 @@ public abstract class Aircraft implements  Flyable {
 
 	public void updateConditions() {
 	}
-
-
 }
