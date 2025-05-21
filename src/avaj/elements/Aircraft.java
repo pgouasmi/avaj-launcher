@@ -1,6 +1,6 @@
 package avaj.elements;
 
-public abstract class Aircraft implements  Flyable {
+public abstract class Aircraft {
 	protected long id;
 	protected String name;
 	protected Coordinates coordinates;
@@ -13,5 +13,16 @@ public abstract class Aircraft implements  Flyable {
 
 
 	public void updateConditions() {
+		
 	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public long getID() {
+		return this.id;
+	}
+
+
 }

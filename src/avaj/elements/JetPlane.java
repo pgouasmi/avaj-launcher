@@ -1,10 +1,10 @@
 package avaj.elements;
 
-public class Helicopter extends Aircraft implements Flyable {
+public class JetPlane extends Aircraft implements Flyable {
 
 	private WeatherTower weatherTower;
 
-	Helicopter(long p_id, String p_name, Coordinates p_coordinates) {
+	JetPlane(long p_id, String p_name, Coordinates p_coordinates) {
 		super(p_id, p_name, p_coordinates);
 		// System.out.println(p_name);
 	}
@@ -15,6 +15,6 @@ public class Helicopter extends Aircraft implements Flyable {
 	}
 
 	public String getType() {
-		return("Helicopter");
+		return("JetPlane");
 	}
 }

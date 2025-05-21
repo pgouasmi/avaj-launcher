@@ -6,4 +6,7 @@ public interface Flyable {
 
 	public void updateConditions();
 	public void registerTower(WeatherTower p_Tower);
+	public String getType();
+	public String getName();
+	public long getID();
 }
