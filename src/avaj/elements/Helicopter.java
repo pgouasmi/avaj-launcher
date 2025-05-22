@@ -45,6 +45,7 @@ public class Helicopter extends Aircraft implements Flyable {
 		}
 
 		System.out.println(this.messageDetails + weatherMessages.get(weather));
+		System.out.println("long: " + this.coordinates.longitude + ", lat: " + this.coordinates.latitude + ", height: " + + this.coordinates.height);
 		if (this.coordinates.height > 100) {
 			this.coordinates.height = 100;
 		}
@@ -55,12 +56,7 @@ public class Helicopter extends Aircraft implements Flyable {
 
 	public void handleSun() {
 		this.coordinates.height += 2;
-		if (this.coordinates.height > 100) {
-			this.coordinates.height = 100;
-		}
 		this.coordinates.latitude += 10;
-
-		// System.out.println(this.messageDetails + this.weatherMessages.get("SUN"));
 	}
 
 	public void handleRain() {
@@ -74,7 +70,6 @@ public class Helicopter extends Aircraft implements Flyable {
 
 	public void handleSnow() {
 		this.coordinates.height -= 12;
-		
 	}
 
 	public void land() {

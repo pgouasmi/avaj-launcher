@@ -41,6 +41,13 @@ public final class Parser {
         }
     }
 
+
+    public static class EmptyFileException extends Exception {
+        public EmptyFileException(String coordinates) {
+            super("The file is empty!");
+        }
+    }
+
     static String fileName;
 	static File file;
 	static Scanner scanner;
@@ -51,10 +58,10 @@ public final class Parser {
         throw new AssertionError("Parser can not be instanciated"); 
     }
 
-    static void getRepetitions() throws WrongRepetitionsException {
-        while(Parser.scanner.hasNext()) {
+    static void getRepetitions() throws WrongRepetitionsException, EmptyFileException {
+        try {
             String reps = "";
-            try {
+            while(Parser.scanner.hasNext()) {
                 reps = Parser.scanner.nextLine();
                 if (reps.isEmpty()) {
                     continue ;
@@ -65,10 +72,12 @@ public final class Parser {
                     // System.out.println("REPS: " + Simulator.repetitions);
                     return;
                 }
-            } catch(Exception e) {
-                // e.printStackTrace();
-                throw new WrongRepetitionsException(reps);
             }
+            if (reps.isEmpty()) {
+                throw new Parser.EmptyFileException(reps);
+            }
+        } catch(Exception e) {
+            throw e;
         }
 	}
 

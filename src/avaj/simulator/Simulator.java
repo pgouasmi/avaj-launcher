@@ -25,13 +25,23 @@ public class Simulator {
 			while (Simulator.repetitions-- != 0) {
 				Simulator.tower.changeWeather();
 			}
-		} catch(Exception e) {
+		} catch(NumberFormatException e) {
+            System.out.println("Wrong repetitions on first line!");
+			System.exit(1);
+
+        }  
+		
+		catch(Exception e) {
 			System.out.println(e.getMessage());
 			System.exit(1);
 		}
 	}
 
-	public static void instanciateFlyables() throws Parser.NoAircraftInFileException {
+	public static void instanciateFlyables() throws 
+				Parser.NoAircraftInFileException, 
+				Parser.MalformedAircraftDataException, 
+				Parser.WrongAircraftTypeException, 
+				Parser.BrokenCoordinatesException {
 		if (!Parser.scanner.hasNext()) {
 			throw new Parser.NoAircraftInFileException();
 		}
@@ -53,7 +63,7 @@ public class Simulator {
 				String latitude = splittedLine[3];
 				String height = splittedLine[4];
 	
-				System.out.println("Type: " + aircraftType + ". Name: " + aircraftName);
+				// System.out.println("Type: " + aircraftType + ". Name: " + aircraftName);
 	
 				Parser.verifyAircraftType(aircraftType);
 				Coordinates coordinates = Simulator.createCoordinates(longitude, latitude, height);
@@ -61,9 +71,7 @@ public class Simulator {
 				aircraft.registerTower(Simulator.tower);
 			}
 		} catch(Exception e) {
-			// System.out.println("caught error in instanciate flyables");
-			System.out.println(e.getMessage());
-			System.exit(1);
+			throw e;
 		}
 	}
 
