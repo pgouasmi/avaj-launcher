@@ -27,50 +27,80 @@ public class Simulator {
 			}
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-			return ;
+			System.exit(1);
 		}
 	}
 
-	public static void instanciateFlyables() {
+	public static void instanciateFlyables() throws Parser.NoAircraftInFileException {
 		if (!Parser.scanner.hasNext()) {
-			throw new ExceptionInInitializerError("No flyables to instanciate");
+			throw new Parser.NoAircraftInFileException();
 		}
-		while (Parser.scanner.hasNext()) {
-			String currentLine = Parser.scanner.nextLine();
-			if (currentLine.isEmpty()) {
-				continue;
+		try {
+			while (Parser.scanner.hasNext()) {
+				String currentLine = Parser.scanner.nextLine();
+				if (currentLine.isEmpty()) {
+					continue;
+				}
+				String[] splittedLine = currentLine.split(" +");
+
+				// System.out.println("Before verify format");
+
+				Parser.verifyFormat(splittedLine);
+	
+				String aircraftType = splittedLine[0];
+				String aircraftName = splittedLine[1];
+				String longitude = splittedLine[2];
+				String latitude = splittedLine[3];
+				String height = splittedLine[4];
+	
+				System.out.println("Type: " + aircraftType + ". Name: " + aircraftName);
+	
+				Parser.verifyAircraftType(aircraftType);
+				Coordinates coordinates = Simulator.createCoordinates(longitude, latitude, height);
+				Flyable aircraft = Simulator.factory.newAircraft(aircraftType, aircraftName, coordinates);
+				aircraft.registerTower(Simulator.tower);
 			}
-			String[] splittedLine = currentLine.split(" ");
-			Parser.verifyFormat(splittedLine);
-
-			String aircraftType = splittedLine[0];
-			String aircraftName = splittedLine[1];
-			String longitude = splittedLine[2];
-			String latitude = splittedLine[3];
-			String height = splittedLine[4];
-
-			// System.out.println("Type: " + aircraftType + ". Name: " + aircraftName);
-
-			Parser.verifyAircraftType(aircraftType);
-			Coordinates coordinates = Simulator.createCoordinates(longitude, latitude, height);
-			Flyable aircraft = Simulator.factory.newAircraft(aircraftType, aircraftName, coordinates);
-			aircraft.registerTower(Simulator.tower);
+		} catch(Exception e) {
+			// System.out.println("caught error in instanciate flyables");
+			System.out.println(e.getMessage());
+			System.exit(1);
 		}
 	}
 
-	public static Coordinates createCoordinates(String longitude, String latitude, String height) {
-		int longitudeInt = Integer.parseInt(longitude);
-		int latitudeInt = Integer.parseInt(latitude);
-		int heightInt = Integer.parseInt(height);
-
-		if (longitudeInt < 1 || latitudeInt < 1 || heightInt < 1) {
-			throw new ExceptionInInitializerError("Broken coordinates");
+	public static Coordinates createCoordinates(String longitude, String latitude, String height) throws Parser.BrokenCoordinatesException {
+		int longitudeInt;
+		int latitudeInt;
+		int heightInt;
+		
+		try {
+			longitudeInt = Integer.parseInt(longitude);
+			if (longitudeInt < -180 || longitudeInt > 180) {
+				throw new Parser.BrokenCoordinatesException(longitude);
+			}
+		} catch(Exception e) {
+			throw e;
 		}
 
-		if (heightInt > 100) {
-			heightInt = 100;
+		try {
+			latitudeInt = Integer.parseInt(latitude);
+			if (latitudeInt < -90 || latitudeInt > 90) {
+				throw new Parser.BrokenCoordinatesException(latitude);
+			}
+		} catch(Exception e) {
+			throw e;
 		}
 
+		try {
+			heightInt = Integer.parseInt(height);
+			if (heightInt < 1) {
+				throw new Parser.BrokenCoordinatesException(height);
+			}
+			if (heightInt > 100) {
+				heightInt = 100;
+			}
+		} catch(Exception e) {
+			throw e;
+		}
 		return new Coordinates(longitudeInt, latitudeInt, heightInt);
 	}
 }
