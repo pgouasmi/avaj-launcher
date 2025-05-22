@@ -17,6 +17,8 @@ public class Tower {
 	public void unregister(Flyable p_flyable) {
 		if (this.observers.contains(p_flyable))
 			this.observers.remove(p_flyable);
+			System.out.println("Tower says: " + p_flyable.getType()+"#"+p_flyable.getName()+'('+p_flyable.getID()+ ") unregistered from weather tower");
+
 	}
 
 	protected void conditionChanged() {

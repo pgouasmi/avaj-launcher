@@ -22,6 +22,9 @@ public class Simulator {
 			Parser.getRepetitions();
 			Simulator.tower = new WeatherTower();
 			Simulator.instanciateFlyables();
+			while (Simulator.repetitions-- != 0) {
+				Simulator.tower.changeWeather();
+			}
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 			return ;

@@ -29,7 +29,7 @@ public final class Parser {
                 else {
                     long casted = Long.parseLong(reps);
                     Simulator.repetitions = casted;
-                    System.out.println("REPS: " + Simulator.repetitions);
+                    // System.out.println("REPS: " + Simulator.repetitions);
                     return;
                 }
             } catch(Exception e) {

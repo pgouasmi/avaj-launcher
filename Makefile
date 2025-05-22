@@ -1,19 +1,26 @@
+GREEN := \033[0;32m
+YELLOW := \033[0;33m
+RED := \033[0;31m
+NC := \033[0m
+
 all: compile exec
 
 compile:
-	@echo "Compiling the source code..."
-	@find * -name "*.java" > sources.txt
-	@javac @sources.txt
-	@echo "Source code compiled\n"
+	@echo "${YELLOW}Compiling the source code...${NC}"
+	find * -name "*.java" > sources.txt
+	javac @sources.txt
+	@echo "${GREEN}Source code compiled\n${NC}"
 
 exec:
-	@echo "lauching exec...\n"
-	@java -cp src avaj.simulator.Simulator scenario.txt
+	@echo "${YELLOW}Executing...\n${NC}"
+	java -cp src avaj.simulator.Simulator scenario.txt
 
 clean:
-	@rm -f src/avaj/*/*.class
-	@rm -f sources.txt
-	@rm -f simulation.txt
+	@echo "${YELLOW}Cleaning the temporary files and .class files...${NC}"
+	rm -f src/avaj/*/*.class
+	rm -f sources.txt
+	rm -f simulation.txt
+	@echo "${GREEN}Repository cleaned up!\n${NC}"
 
 re: clean all
 
