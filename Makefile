@@ -13,12 +13,12 @@ compile:
 
 exec:
 	@echo "${YELLOW}Executing...\n${NC}"
-	java -cp src avaj.simulator.Simulator scenario.txt
+	java -cp src fr.fortytwo_lyon.pgouasmi.AvajLauncher.simulator.Simulator scenario.txt
 	@echo "${GREEN}\nSimulation result is written in scenario.txt!"
 
 clean:
 	@echo "${YELLOW}Cleaning the temporary files and .class files...${NC}"
-	rm -f src/avaj/*/*.class
+	find * -name '*.class' -delete
 	rm -f sources.txt
 	rm -f simulation.txt
 	@echo "${GREEN}Repository cleaned up!\n${NC}"

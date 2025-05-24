@@ -1,11 +1,13 @@
-package avaj.elements;
+package fr.fortytwo_lyon.pgouasmi.AvajLauncher.flyables;
 
-import avaj.simulator.avajLogger;
+import fr.fortytwo_lyon.pgouasmi.AvajLauncher.elements.Coordinates;
+import fr.fortytwo_lyon.pgouasmi.AvajLauncher.elements.WeatherTower;
+import fr.fortytwo_lyon.pgouasmi.AvajLauncher.simulator.avajLogger;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JetPlane extends Aircraft implements Flyable {
+public class Baloon extends Aircraft implements Flyable {
 
 	private WeatherTower weatherTower;
 	private static final Map<String, String> weatherMessages;
@@ -17,35 +19,33 @@ public class JetPlane extends Aircraft implements Flyable {
 		weatherMessages.put("SNOW", "its snowy in here");
 	}
 
-	JetPlane(long p_id, String p_name, Coordinates p_coordinates) {
+	Baloon(long p_id, String p_name, Coordinates p_coordinates) {
 		super(p_id, p_name, p_coordinates);
 		// System.out.println(p_name);
 	}
 
-    @Override
+	@Override
 	public void registerTower(WeatherTower p_weatherTower) throws IOException {
 		this.weatherTower = p_weatherTower;
 		p_weatherTower.register(this);
 	}
 
-	
-    @Override
+	@Override
 	public String getType() {
-		return("JetPlane");
+		return("Baloon");
 	}
 
 	@Override
 	public void updateConditions() throws IOException {
-		String weather;
-            weather = this.weatherTower.getWeather(this.coordinates);
-            switch (weather) {
-                case "SUN" -> this.handleSun();
-                case "RAIN" -> this.handleRain();
-                case "FOG" -> this.handleFog();
-                case "SNOW" -> this.handleSnow();
-            }
+		String weather = this.weatherTower.getWeather(this.coordinates);
+		switch (weather) {
+			case "SUN" -> this.handleSun();
+			case "RAIN" -> this.handleRain();
+			case "FOG" -> this.handleFog();
+			case "SNOW" -> this.handleSnow();
+		}
 
-			avajLogger.getInstance().writeToFile(getMessageDetails() + weatherMessages.get(weather));
+		avajLogger.getInstance().writeToFile(getMessageDetails() + weatherMessages.get(weather));
 
 		if (this.coordinates.getHeight() <= 0) {
 			this.land();
@@ -54,23 +54,23 @@ public class JetPlane extends Aircraft implements Flyable {
 
 	@Override
 	public void handleSun() {
-		this.coordinates.setLatitude(10);
-		this.coordinates.setHeight(2);
+		this.coordinates.setLongitude(2);
+		this.coordinates.setHeight(4);
 	}
 
 	@Override
 	public void handleRain() {
-		this.coordinates.setLatitude(5);
+		this.coordinates.setHeight(-5);
 	}
 
 	@Override
 	public void handleFog() {
-		this.coordinates.setLatitude(1);
+		this.coordinates.setHeight(-3);
 	}
 
 	@Override
 	public void handleSnow() {
-		this.coordinates.setHeight(-7);
+		this.coordinates.setHeight(-15);
 	}
 
 	@Override
@@ -85,6 +85,6 @@ public class JetPlane extends Aircraft implements Flyable {
 
 	@Override
 	public String getMessageDetails() {
-        return "JetPlane#" + this.name + "(" + this.id + "): ";
+        return "Baloon#" + this.name + "(" + this.id + "): ";
     }
 }

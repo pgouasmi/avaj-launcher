@@ -1,4 +1,4 @@
-package avaj.elements;
+package fr.fortytwo_lyon.pgouasmi.AvajLauncher.elements;
 
 public class Coordinates {
 	private int longitude;

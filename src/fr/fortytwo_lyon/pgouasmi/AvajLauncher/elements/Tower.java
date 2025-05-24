@@ -1,6 +1,7 @@
-package avaj.elements;
+package fr.fortytwo_lyon.pgouasmi.AvajLauncher.elements;
 
-import avaj.simulator.avajLogger;
+import fr.fortytwo_lyon.pgouasmi.AvajLauncher.flyables.Flyable;
+import fr.fortytwo_lyon.pgouasmi.AvajLauncher.simulator.avajLogger;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

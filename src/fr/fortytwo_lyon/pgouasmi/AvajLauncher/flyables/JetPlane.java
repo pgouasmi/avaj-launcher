@@ -1,11 +1,13 @@
-package avaj.elements;
+package fr.fortytwo_lyon.pgouasmi.AvajLauncher.flyables;
 
-import avaj.simulator.avajLogger;
+import fr.fortytwo_lyon.pgouasmi.AvajLauncher.elements.Coordinates;
+import fr.fortytwo_lyon.pgouasmi.AvajLauncher.elements.WeatherTower;
+import fr.fortytwo_lyon.pgouasmi.AvajLauncher.simulator.avajLogger;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Helicopter extends Aircraft implements Flyable {
+public class JetPlane extends Aircraft implements Flyable {
 
 	private WeatherTower weatherTower;
 	private static final Map<String, String> weatherMessages;
@@ -17,8 +19,9 @@ public class Helicopter extends Aircraft implements Flyable {
 		weatherMessages.put("SNOW", "its snowy in here");
 	}
 
-	Helicopter(long p_id, String p_name, Coordinates p_coordinates) {
+	JetPlane(long p_id, String p_name, Coordinates p_coordinates) {
 		super(p_id, p_name, p_coordinates);
+		// System.out.println(p_name);
 	}
 
     @Override
@@ -27,14 +30,16 @@ public class Helicopter extends Aircraft implements Flyable {
 		p_weatherTower.register(this);
 	}
 
-	@Override
+	
+    @Override
 	public String getType() {
-		return("Helicopter");
+		return("JetPlane");
 	}
 
 	@Override
 	public void updateConditions() throws IOException {
-		String weather = this.weatherTower.getWeather(this.coordinates);
+		String weather;
+            weather = this.weatherTower.getWeather(this.coordinates);
             switch (weather) {
                 case "SUN" -> this.handleSun();
                 case "RAIN" -> this.handleRain();
@@ -42,8 +47,8 @@ public class Helicopter extends Aircraft implements Flyable {
                 case "SNOW" -> this.handleSnow();
             }
 
-		avajLogger.getInstance().writeToFile(getMessageDetails() + weatherMessages.get(weather));
-	
+			avajLogger.getInstance().writeToFile(getMessageDetails() + weatherMessages.get(weather));
+
 		if (this.coordinates.getHeight() <= 0) {
 			this.land();
 		}
@@ -51,26 +56,26 @@ public class Helicopter extends Aircraft implements Flyable {
 
 	@Override
 	public void handleSun() {
-		this.coordinates.setHeight(2);
 		this.coordinates.setLatitude(10);
+		this.coordinates.setHeight(2);
 	}
 
 	@Override
 	public void handleRain() {
-		this.coordinates.setLongitude(5);
-
+		this.coordinates.setLatitude(5);
 	}
 
 	@Override
 	public void handleFog() {
-		this.coordinates.setLongitude(1);
+		this.coordinates.setLatitude(1);
 	}
 
 	@Override
 	public void handleSnow() {
-		this.coordinates.setHeight(-12);
+		this.coordinates.setHeight(-7);
 	}
 
+	@Override
 	public void land() throws IOException {
 		try {
 			avajLogger.getInstance().writeToFile(getMessageDetails() + "landing");
@@ -81,7 +86,7 @@ public class Helicopter extends Aircraft implements Flyable {
 	}
 
 	@Override
-    public String getMessageDetails() {
-        return "Helicopter#" + this.name + "(" + this.id + "): ";
+	public String getMessageDetails() {
+        return "JetPlane#" + this.name + "(" + this.id + "): ";
     }
 }

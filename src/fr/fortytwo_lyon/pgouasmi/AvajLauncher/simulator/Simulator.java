@@ -1,9 +1,9 @@
-package avaj.simulator;
+package fr.fortytwo_lyon.pgouasmi.AvajLauncher.simulator;
 
-import avaj.elements.AircraftFactory;
-import avaj.elements.Coordinates;
-import avaj.elements.Flyable;
-import avaj.elements.WeatherTower;
+import fr.fortytwo_lyon.pgouasmi.AvajLauncher.elements.Coordinates;
+import fr.fortytwo_lyon.pgouasmi.AvajLauncher.elements.WeatherTower;
+import fr.fortytwo_lyon.pgouasmi.AvajLauncher.flyables.AircraftFactory;
+import fr.fortytwo_lyon.pgouasmi.AvajLauncher.flyables.Flyable;
 import java.io.IOException;
 
 public class Simulator {

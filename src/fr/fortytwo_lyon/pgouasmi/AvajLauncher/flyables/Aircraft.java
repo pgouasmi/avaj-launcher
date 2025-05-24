@@ -1,4 +1,6 @@
-package avaj.elements;
+package fr.fortytwo_lyon.pgouasmi.AvajLauncher.flyables;
+
+import fr.fortytwo_lyon.pgouasmi.AvajLauncher.elements.Coordinates;
 
 public class Aircraft {
 	protected long id;

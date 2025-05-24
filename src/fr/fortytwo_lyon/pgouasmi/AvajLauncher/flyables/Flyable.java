@@ -1,6 +1,8 @@
-package avaj.elements;
+package fr.fortytwo_lyon.pgouasmi.AvajLauncher.flyables;
 
 import java.io.IOException;
+
+import fr.fortytwo_lyon.pgouasmi.AvajLauncher.elements.WeatherTower;
 
 public interface Flyable {
 

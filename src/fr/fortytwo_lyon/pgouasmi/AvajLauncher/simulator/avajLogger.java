@@ -1,4 +1,4 @@
-package avaj.simulator;
+package fr.fortytwo_lyon.pgouasmi.AvajLauncher.simulator;
 
 import java.io.IOException;
 import java.io.PrintWriter;

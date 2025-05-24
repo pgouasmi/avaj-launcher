@@ -1,4 +1,4 @@
-package avaj.simulator;
+package fr.fortytwo_lyon.pgouasmi.AvajLauncher.simulator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
