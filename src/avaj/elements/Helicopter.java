@@ -1,13 +1,14 @@
 package avaj.elements;
 
+import avaj.simulator.avajLogger;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Helicopter extends Aircraft implements Flyable {
 
 	private WeatherTower weatherTower;
-	String messageDetails = "Helicopter#" + this.name + "(" + this.id + "): ";
-	private static Map<String, String> weatherMessages;
+	private static final Map<String, String> weatherMessages;
 	static {
 		weatherMessages = new HashMap<>();
 		weatherMessages.put("SUN", "its hot in here");
@@ -20,60 +21,67 @@ public class Helicopter extends Aircraft implements Flyable {
 		super(p_id, p_name, p_coordinates);
 	}
 
-	public void registerTower(WeatherTower p_weatherTower) {
+    @Override
+	public void registerTower(WeatherTower p_weatherTower) throws IOException {
 		this.weatherTower = p_weatherTower;
 		p_weatherTower.register(this);
 	}
 
+	@Override
 	public String getType() {
 		return("Helicopter");
 	}
 
-	public void updateConditions() {
+	@Override
+	public void updateConditions() throws IOException {
 		String weather = this.weatherTower.getWeather(this.coordinates);
-		if (weather.equals("SUN")) {
-			this.handleSun();
-		}
-		else if (weather.equals("RAIN")) {
-			this.handleRain();
-		}
-		else if (weather.equals("FOG")) {
-			this.handleFog();
-		}
-		else {
-			this.handleSnow();
-		}
+            switch (weather) {
+                case "SUN" -> this.handleSun();
+                case "RAIN" -> this.handleRain();
+                case "FOG" -> this.handleFog();
+                case "SNOW" -> this.handleSnow();
+            }
 
-		System.out.println(this.messageDetails + weatherMessages.get(weather));
-		System.out.println("long: " + this.coordinates.longitude + ", lat: " + this.coordinates.latitude + ", height: " + + this.coordinates.height);
-		if (this.coordinates.height > 100) {
-			this.coordinates.height = 100;
-		}
-		if (this.coordinates.height <= 0) {
+		avajLogger.getInstance().writeToFile(getMessageDetails() + weatherMessages.get(weather));
+	
+		if (this.coordinates.getHeight() <= 0) {
 			this.land();
 		}
 	}
 
+	@Override
 	public void handleSun() {
-		this.coordinates.height += 2;
-		this.coordinates.latitude += 10;
+		this.coordinates.setHeight(2);
+		this.coordinates.setLatitude(10);
 	}
 
+	@Override
 	public void handleRain() {
-		this.coordinates.longitude += 5;
+		this.coordinates.setLongitude(5);
 
 	}
 
+	@Override
 	public void handleFog() {
-		this.coordinates.longitude += 1;
+		this.coordinates.setLongitude(1);
 	}
 
+	@Override
 	public void handleSnow() {
-		this.coordinates.height -= 12;
+		this.coordinates.setHeight(-12);
 	}
 
-	public void land() {
-		System.out.println(this.messageDetails + "landing");
-		this.weatherTower.unregister(this);
+	public void land() throws IOException {
+		try {
+			avajLogger.getInstance().writeToFile(getMessageDetails() + "landing");
+			this.weatherTower.unregister(this);	
+		} catch (Exception e) {
+			throw e;
+		}
 	}
+
+	@Override
+    public String getMessageDetails() {
+        return "Helicopter#" + this.name + "(" + this.id + "): ";
+    }
 }

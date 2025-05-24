@@ -1,10 +1,10 @@
 package avaj.simulator;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
-import java.io.FileNotFoundException;
 
 // execptions: wromng aircraft type, no repetitions, malformed aircraft infos, no aircrafts, broken coordinates
 
@@ -63,9 +63,7 @@ public final class Parser {
             String reps = "";
             while(Parser.scanner.hasNext()) {
                 reps = Parser.scanner.nextLine();
-                if (reps.isEmpty()) {
-                    continue ;
-                }
+                if (reps.isEmpty()) {}
                 else {
                     long casted = Long.parseLong(reps);
                     Simulator.repetitions = casted;

@@ -1,13 +1,14 @@
 package avaj.elements;
 
+import avaj.simulator.avajLogger;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Baloon extends Aircraft implements Flyable {
 
 	private WeatherTower weatherTower;
-	String messageDetails = "Baloon#" + this.name + "(" + this.id + "): ";
-	private static Map<String, String> weatherMessages;
+	private static final Map<String, String> weatherMessages;
 	static {
 		weatherMessages = new HashMap<>();
 		weatherMessages.put("SUN", "its hot in here");
@@ -21,58 +22,67 @@ public class Baloon extends Aircraft implements Flyable {
 		// System.out.println(p_name);
 	}
 
-	public void registerTower(WeatherTower p_weatherTower) {
+	@Override
+	public void registerTower(WeatherTower p_weatherTower) throws IOException {
 		this.weatherTower = p_weatherTower;
 		p_weatherTower.register(this);
 	}
 
+	@Override
 	public String getType() {
 		return("Baloon");
 	}
 
-	public void updateConditions() {
+	@Override
+	public void updateConditions() throws IOException {
 		String weather = this.weatherTower.getWeather(this.coordinates);
-		if (weather.equals("SUN")) {
-			this.handleSun();
-		}
-		else if (weather.equals("RAIN")) {
-			this.handleRain();
-		}
-		else if (weather.equals("FOG")) {
-			this.handleFog();
-		}
-		else {
-			this.handleSnow();
+		switch (weather) {
+			case "SUN" -> this.handleSun();
+			case "RAIN" -> this.handleRain();
+			case "FOG" -> this.handleFog();
+			case "SNOW" -> this.handleSnow();
 		}
 
-		System.out.println(this.messageDetails + weatherMessages.get(weather));
-		if (this.coordinates.height > 100) {
-			this.coordinates.height = 100;
-		}
-		if (this.coordinates.height <= 0) {
+		avajLogger.getInstance().writeToFile(getMessageDetails() + weatherMessages.get(weather));
+
+		if (this.coordinates.getHeight() <= 0) {
 			this.land();
 		}
 	}
 
+	@Override
 	public void handleSun() {
-		this.coordinates.longitude += 2;
-		this.coordinates.height += 4;
+		this.coordinates.setLongitude(2);
+		this.coordinates.setHeight(4);
 	}
 
+	@Override
 	public void handleRain() {
-		this.coordinates.height -= 5;
+		this.coordinates.setHeight(-5);
 	}
 
+	@Override
 	public void handleFog() {
-		this.coordinates.height -= 3;
+		this.coordinates.setHeight(-3);
 	}
 
+	@Override
 	public void handleSnow() {
-		this.coordinates.height -= 15;
+		this.coordinates.setHeight(-15);
 	}
 
-	public void land() {
-		System.out.println(this.messageDetails + "landing");
-		this.weatherTower.unregister(this);
+	@Override
+	public void land() throws IOException {
+		try {
+			avajLogger.getInstance().writeToFile(getMessageDetails() + "landing");
+			this.weatherTower.unregister(this);	
+		} catch (Exception e) {
+			throw e;
+		}
 	}
+
+	@Override
+	public String getMessageDetails() {
+        return "Baloon#" + this.name + "(" + this.id + "): ";
+    }
 }

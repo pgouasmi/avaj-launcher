@@ -1,6 +1,6 @@
 package avaj.elements;
 
-public abstract class Aircraft {
+public class Aircraft {
 	protected long id;
 	protected String name;
 	protected Coordinates coordinates;

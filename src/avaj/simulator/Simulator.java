@@ -2,8 +2,9 @@ package avaj.simulator;
 
 import avaj.elements.AircraftFactory;
 import avaj.elements.Coordinates;
-import avaj.elements.WeatherTower;
 import avaj.elements.Flyable;
+import avaj.elements.WeatherTower;
+import java.io.IOException;
 
 public class Simulator {
 
@@ -18,6 +19,7 @@ public class Simulator {
 		}
 
 		try {
+			avajLogger.createInstance();
 			Parser.openFile(args[0]);
 			Parser.getRepetitions();
 			Simulator.tower = new WeatherTower();
@@ -25,15 +27,16 @@ public class Simulator {
 			while (Simulator.repetitions-- != 0) {
 				Simulator.tower.changeWeather();
 			}
-		} catch(NumberFormatException e) {
-            System.out.println("Wrong repetitions on first line!");
-			System.exit(1);
+			avajLogger.getInstance().close();
 
-        }  
-		
-		catch(Exception e) {
-			System.out.println(e.getMessage());
+		} catch(NumberFormatException e) {
+            System.err.println("Wrong repetitions on first line!");
 			System.exit(1);
+			avajLogger.getInstance().close();
+        } catch(Exception e) {
+			System.err.println("Error caught: " + e.getMessage());
+			System.exit(1);
+			avajLogger.getInstance().close();
 		}
 	}
 
@@ -41,7 +44,8 @@ public class Simulator {
 				Parser.NoAircraftInFileException, 
 				Parser.MalformedAircraftDataException, 
 				Parser.WrongAircraftTypeException, 
-				Parser.BrokenCoordinatesException {
+				Parser.BrokenCoordinatesException,
+				IOException {
 		if (!Parser.scanner.hasNext()) {
 			throw new Parser.NoAircraftInFileException();
 		}

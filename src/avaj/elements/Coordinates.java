@@ -1,9 +1,9 @@
 package avaj.elements;
 
 public class Coordinates {
-	int longitude;
-	int latitude;
-	int height;
+	private int longitude;
+	private int latitude;
+	private int height;
 
     public Coordinates(int p_longitude, int p_latitude, int p_height) {
 		this.longitude = p_longitude;
@@ -23,6 +23,18 @@ public class Coordinates {
 		return this.height;
 	}
 
-	
-	
+	public void setLongitude(int value) {
+		this.longitude += value;
+	}
+
+	public void setLatitude(int value) {
+		this.latitude += value;
+	}
+
+	public void setHeight(int value) {
+		this.height += value;
+		if (this.height > 100) {
+			this.height = 100;
+		}
+	}
 }

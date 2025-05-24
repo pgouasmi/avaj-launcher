@@ -2,19 +2,16 @@ package avaj.elements;
 
 public class WeatherProvider {
 
-    private static WeatherProvider _instance = new WeatherProvider();
-    private static String[] weather = {"SUN", "RAIN", "SNOW", "FOG"};
+    private static final WeatherProvider _instance = new WeatherProvider();
+    private static final String[] weather = {"SUN", "RAIN", "SNOW", "FOG"};
 
-    WeatherProvider() {
-        ;
-    }
+    private WeatherProvider() {}
 
     public static WeatherProvider get_instance() {
         return _instance;
     }
     
-    String getCurrentWeather(Coordinates coordinates) {
-        return (WeatherProvider.weather[(int)Math.abs((coordinates.height * 31 + coordinates.latitude * 17 + coordinates.longitude * 13) % 4)]);
-    }
-    
+    public String getCurrentWeather(Coordinates coordinates) {
+        return (WeatherProvider.weather[(int)Math.abs((coordinates.getLongitude() * 13 + coordinates.getHeight() * 31 + coordinates.getLatitude() * 17) % 4)]);
+    } 
 }
